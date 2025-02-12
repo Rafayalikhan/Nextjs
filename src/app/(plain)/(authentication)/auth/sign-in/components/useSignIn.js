@@ -29,13 +29,14 @@ const useSignIn = () => {
     },
   });
 
-  // useEffect(() => {
-  //   // ✅ Check if user is already logged in
-  //   const token = Cookies.get('token');
-  //   if (token) {
-  //     push('/feed/home'); // Redirect if already logged in
-  //   }
-  // }, [push]);
+  useEffect(() => {
+    // ✅ Check if user is already logged in
+    const token = Cookies.get('token');
+    if (token) {
+      console.log("✅ User already logged in, redirecting...");
+      push('/feed/home'); // Redirect if already logged in
+    }
+  }, [push]);
 
   // ✅ Normal Email/Password Login
   const login = handleSubmit(async (values) => {
@@ -51,8 +52,12 @@ const useSignIn = () => {
       // ✅ Store token securely
       Cookies.set('token', token, { expires: 7, secure: true });
 
+      // ✅ Get redirectTo from URL query params
+      const redirectTo = queryParams['redirectTo'] ?? '/feed/home';
+      console.log("✅ Redirecting to:", redirectTo);
+
       // ✅ Redirect user
-      push(queryParams['redirectTo'] ?? '/feed/home');
+      push(redirectTo);
 
       showNotification({
         message: 'Successfully logged in. Redirecting....',
@@ -68,15 +73,9 @@ const useSignIn = () => {
     }
   });
 
-  // ✅ LinkedIn Login Handler
-  const loginWithLinkedIn = () => {
-    window.location.href = 'https://br-backend-server.vercel.app/auth/linkedin';
-  };
-
   return {
     loading,
     login,
-    loginWithLinkedIn, // ✅ Add LinkedIn Login function
     control,
   };
 };
