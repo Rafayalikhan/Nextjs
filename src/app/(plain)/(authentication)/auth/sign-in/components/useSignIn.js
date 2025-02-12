@@ -2,15 +2,17 @@
 
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNotificationContext } from '@/context/useNotificationContext';
 import useQueryParams from '@/hooks/useQueryParams';
+import Cookies from 'js-cookie';
 
 const useSignIn = () => {
   const [loading, setLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { push } = useRouter();
   const { showNotification } = useNotificationContext();
   const queryParams = useQueryParams();
@@ -28,6 +30,14 @@ const useSignIn = () => {
     },
   });
 
+  useEffect(() => {
+    // Check if user is already logged in
+    const token = Cookies.get('token'); // Read token from cookies
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const login = handleSubmit(async (values) => {
     setLoading(true);
     try {
@@ -38,12 +48,17 @@ const useSignIn = () => {
 
       const { token, user } = response.data;
 
-      // Store the token and user in localStorage
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+      // ✅ Securely store the token in cookies
+      Cookies.set('token', token, { expires: 7, secure: true });
 
-      // Redirect to the intended page or default to '/feed/home'
-      push('/feed/home');
+      // ✅ Store user data in session storage
+      sessionStorage.setItem('user', JSON.stringify(user));
+
+      // ✅ Set authentication state
+      setIsAuthenticated(true);
+
+      // ✅ Redirect user
+      push(queryParams['redirectTo'] ?? '/feed/home');
 
       showNotification({
         message: 'Successfully logged in. Redirecting....',
@@ -63,6 +78,7 @@ const useSignIn = () => {
     loading,
     login,
     control,
+    isAuthenticated, // ✅ New state to check if user is logged in
   };
 };
 
