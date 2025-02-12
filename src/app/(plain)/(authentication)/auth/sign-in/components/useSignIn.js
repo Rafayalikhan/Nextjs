@@ -52,7 +52,7 @@ const useSignIn = () => {
       Cookies.set('token', token, { expires: 7, secure: true });
 
       // ✅ Redirect user
-      push(queryParams['redirectTo'] ?? '/feed/home');
+      push('/feed/home');
 
       showNotification({
         message: 'Successfully logged in. Redirecting....',
