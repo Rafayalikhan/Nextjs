@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,13 +14,6 @@ const useSignIn = () => {
   const { push } = useRouter();
   const { showNotification } = useNotificationContext();
   const queryParams = useQueryParams();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      push('/feed/home'); // Already logged in, redirect to dashboard
-    }
-  }, [push]);
 
   const loginFormSchema = yup.object({
     email: yup.string().email('Please enter a valid email').required('Please enter your email'),
@@ -45,11 +38,12 @@ const useSignIn = () => {
 
       const { token, user } = response.data;
 
+      // Store the token and user in localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('isAuthenticated', 'true');
 
-      push(queryParams['redirectTo'] ?? '/feed/home');
+      // Redirect to the intended page or default to '/feed/home'
+      push('/feed/home');
 
       showNotification({
         message: 'Successfully logged in. Redirecting....',
