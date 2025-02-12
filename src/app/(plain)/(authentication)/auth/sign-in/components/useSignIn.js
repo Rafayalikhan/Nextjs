@@ -29,14 +29,14 @@ const useSignIn = () => {
     },
   });
 
-  useEffect(() => {
-    // ✅ Check if user is already logged in
-    const token = Cookies.get('token');
-    if (token) {
-      console.log("✅ User already logged in, redirecting...");
-      push('/feed/home'); // Redirect if already logged in
-    }
-  }, [push]);
+  // useEffect(() => {
+  //   // ✅ Check if user is already logged in
+  //   const token = Cookies.get('token');
+  //   if (token) {
+  //     console.log("✅ User already logged in, redirecting...");
+  //     push('/feed/home'); // Redirect if already logged in
+  //   }
+  // }, [push]);
 
   // ✅ Normal Email/Password Login
   const login = handleSubmit(async (values) => {
