@@ -6,19 +6,9 @@ import useSignIn from './useSignIn';
 import TextFormInput from '@/components/form/TextFormInput';
 import PasswordFormInput from '@/components/form/PasswordFormInput';
 import { Button, FormCheck, Spinner } from 'react-bootstrap';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
-  const { loading, login, control, isAuthenticated } = useSignIn();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      // User already logged in? Redirect to home
-      router.push('/feed/home');
-    }
-  }, [isAuthenticated, router]);
+  const { loading, login, loginWithLinkedIn, control } = useSignIn();
 
   return (
     <form className="mt-sm-4" onSubmit={login}>
@@ -43,9 +33,20 @@ const LoginForm = () => {
         <FormCheck type="checkbox" label="Remember me?" id="rememberCheck" />
         <Link href="/auth/forgot-pass">Forgot password?</Link>
       </div>
-      <div className="d-grid">
+      <div className="d-grid gap-2">
+        {/* ✅ Normal Email Login Button */}
         <Button variant="primary" size="lg" type="submit" disabled={loading}>
           {loading ? <Spinner as="span" animation="border" size="sm" /> : 'Login'}
+        </Button>
+
+        {/* ✅ LinkedIn Login Button */}
+        <Button
+          variant="outline-primary"
+          size="lg"
+          onClick={loginWithLinkedIn}
+          disabled={loading}
+        >
+          <i className="bi bi-linkedin"></i> Login with LinkedIn
         </Button>
       </div>
       <p className="mb-0 mt-3">

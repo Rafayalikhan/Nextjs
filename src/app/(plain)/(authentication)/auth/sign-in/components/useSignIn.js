@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,7 +12,6 @@ import Cookies from 'js-cookie';
 
 const useSignIn = () => {
   const [loading, setLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { push } = useRouter();
   const { showNotification } = useNotificationContext();
   const queryParams = useQueryParams();
@@ -30,14 +29,15 @@ const useSignIn = () => {
     },
   });
 
-  useEffect(() => {
-    // Check if user is already logged in
-    const token = Cookies.get('token'); // Read token from cookies
-    if (token) {
-      setIsAuthenticated(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   // ✅ Check if user is already logged in
+  //   const token = Cookies.get('token');
+  //   if (token) {
+  //     push('/feed/home'); // Redirect if already logged in
+  //   }
+  // }, [push]);
 
+  // ✅ Normal Email/Password Login
   const login = handleSubmit(async (values) => {
     setLoading(true);
     try {
@@ -48,14 +48,8 @@ const useSignIn = () => {
 
       const { token, user } = response.data;
 
-      // ✅ Securely store the token in cookies
+      // ✅ Store token securely
       Cookies.set('token', token, { expires: 7, secure: true });
-
-      // ✅ Store user data in session storage
-      sessionStorage.setItem('user', JSON.stringify(user));
-
-      // ✅ Set authentication state
-      setIsAuthenticated(true);
 
       // ✅ Redirect user
       push(queryParams['redirectTo'] ?? '/feed/home');
@@ -74,11 +68,16 @@ const useSignIn = () => {
     }
   });
 
+  // ✅ LinkedIn Login Handler
+  const loginWithLinkedIn = () => {
+    window.location.href = 'https://br-backend-server.vercel.app/auth/linkedin';
+  };
+
   return {
     loading,
     login,
+    loginWithLinkedIn, // ✅ Add LinkedIn Login function
     control,
-    isAuthenticated, // ✅ New state to check if user is logged in
   };
 };
 

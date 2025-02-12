@@ -26,7 +26,7 @@ const ProfileDropdown = () => {
 
   // Logout function
   const handleLogout = async () => {
-    debugger
+
     setLoading(true);
     try {
       // Call backend logout API
