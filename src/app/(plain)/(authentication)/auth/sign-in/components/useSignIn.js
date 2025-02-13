@@ -51,8 +51,10 @@ const useSignIn = () => {
       // ✅ Store token securely
       Cookies.set('token', token, { expires: 7, secure: true });
 
-      // ✅ Redirect user
-      push('/feed/home');
+      const redirectTo = queryParams['redirectTo'] || '/feed/home';
+      push(redirectTo);
+
+
 
       showNotification({
         message: 'Successfully logged in. Redirecting....',
