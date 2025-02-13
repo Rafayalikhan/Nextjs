@@ -14,10 +14,10 @@ const AuthProtectionWrapper = ({
     push
   } = useRouter();
   const pathname = usePathname();
-  if (status == 'unauthenticated') {
-    push(`/auth/sign-in?redirectTo=${pathname}`);
-    return <FallbackLoading />;
-  }
+  // if (status == 'unauthenticated') {
+  //   push(`/auth/sign-in?redirectTo=${pathname}`);
+  //   return <FallbackLoading />;
+  // }
   return <Suspense>{children}</Suspense>;
 };
 export default AuthProtectionWrapper;
