@@ -58,7 +58,7 @@ const LoginForm = () => {
           onClick={loginWithGoogle}
           disabled={loading}
         >
-          <i className="bi bi-linkedin"></i> Login with LinkedIn
+          <i className="bi bi-linkedin"></i> Login with Google
         </Button>
 
 
