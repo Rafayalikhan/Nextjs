@@ -8,7 +8,7 @@ import PasswordFormInput from '@/components/form/PasswordFormInput';
 import { Button, FormCheck, Spinner } from 'react-bootstrap';
 
 const LoginForm = () => {
-  const { loading, login, loginWithLinkedIn, control } = useSignIn();
+  const { loading, login, loginWithLinkedIn, control ,loginWithGoogle} = useSignIn();
 
   return (
     <form className="mt-sm-4" onSubmit={login}>
@@ -48,6 +48,21 @@ const LoginForm = () => {
         >
           <i className="bi bi-linkedin"></i> Login with LinkedIn
         </Button>
+
+
+
+ {/* ✅ Google Login Button */}
+ <Button
+          variant="outline-primary"
+          size="lg"
+          onClick={loginWithGoogle}
+          disabled={loading}
+        >
+          <i className="bi bi-linkedin"></i> Login with LinkedIn
+        </Button>
+
+
+
       </div>
       <p className="mb-0 mt-3">
         ©{currentYear}{' '}

@@ -74,10 +74,19 @@ const useSignIn = () => {
     window.location.href = 'https://br-backend-server.vercel.app/auth/linkedin';
   };
 
+
+
+   // ✅ LinkedIn Login Handler
+   const loginWithGoogle = () => {
+    window.location.href = 'https://br-backend-server.vercel.app/api/login';
+  };
+
+
   return {
     loading,
     login,
-    loginWithLinkedIn, // ✅ Add LinkedIn Login function
+    loginWithLinkedIn,
+    loginWithGoogle,
     control,
   };
 };
